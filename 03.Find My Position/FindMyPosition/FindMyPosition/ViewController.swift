@@ -31,6 +31,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         locationLabel.frame = CGRect(x: 0, y: 50, width: self.view.bounds.width, height: 100)
         locationLabel.textAlignment = .center
         locationLabel.textColor = UIColor.white
+        locationLabel.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
+        locationLabel.numberOfLines = 0
         self.view.addSubview(locationLabel)
         
         locationStrLabel.frame = CGRect(x: 0, y: 100, width: self.view.bounds.width, height: 50)
@@ -40,9 +42,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         
         let findMyLocationBtn = UIButton(type: .custom)
         findMyLocationBtn.frame = CGRect(x: 50, y: self.view.bounds.height - 80, width: self.view.bounds.width - 100, height: 50)
-        findMyLocationBtn.setTitle("Find My Position", for: UIControlState.normal)
-        findMyLocationBtn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        findMyLocationBtn.addTarget(self, action: #selector(findMyLocation), for: UIControlEvents.touchUpInside)
+        findMyLocationBtn.setTitle("Find My Position", for: UIControl.State.normal)
+        findMyLocationBtn.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        findMyLocationBtn.addTarget(self, action: #selector(findMyLocation), for: UIControl.Event.touchUpInside)
         self.view.addSubview(findMyLocationBtn)
     }
 
@@ -59,7 +61,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locations : NSArray = locations as NSArray
         let currentLocation = locations.lastObject as! CLLocation
-        let locationStr = "lat:\(currentLocation.coordinate.latitude) lng:\(currentLocation.coordinate.longitude)"
+        let locationStr = """
+                   lat:\(currentLocation.coordinate.latitude)
+                   lon:\(currentLocation.coordinate.longitude)
+                """
         locationLabel.text = locationStr
         reverseGeocode(location:currentLocation)
         locationManager.stopUpdatingLocation()
